@@ -1,25 +1,16 @@
 'use strict';
 
 function find(collection, ch) {
-    for (let item of collection) {
-        if (item.name === ch) {
-            return item;
-        }
-    }
-
-    return null;
+    return collection.find(item => item.name === ch);
 }
 
 function summarize(collection) {
     let result = [];
-    for (let item of collection) {
-        let obj = find(result, item)
-        if (obj) {
-            obj.summary++;
-        } else {
-            result.push({name: item, summary: 1});
-        }
-    }
+
+    collection.forEach(item =>{
+        let obj = find(result, item);
+        obj ? obj.summary++ : result.push({name: item, summary: 1});
+    });
     return result;
 }
 
@@ -49,15 +40,15 @@ function push(result, key, count) {
 
 function expand(collection) {
     let result = [];
-    for (let item of collection) {
-        if (item.length === 1) {
-            result.push(item);
-        } else {
-            let {key, count} = split(item);
-            push(result, key, count);
-        }
-    }
+    collection.forEach(item =>{
+        (item.length === 1) ? result.push(item) : pushSubKey(item, result);
+    });
     return result;
+}
+
+function pushSubKey(item, result) {
+    let {key, count} = split(item);
+    push(result, key, count);
 }
 
 module.exports = function countSameElements(collection) {
