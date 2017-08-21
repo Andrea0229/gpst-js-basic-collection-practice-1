@@ -1,13 +1,7 @@
 'use strict';
 
 function find(collection, ch) {
-    for (let item of collection) {
-        if (item.key === ch) {
-            return item;
-        }
-    }
-
-    return null;
+    return collection.find(item => item.key === ch)
 }
 
 module.exports = function countSameElements(collection) {
